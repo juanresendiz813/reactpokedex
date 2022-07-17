@@ -8,10 +8,18 @@ import {useEffect, useState} from "react";
 export default function Home() {
 
   const [pokeList, setPokeList] = useState([])
+  const [pokeSearch, setPokeSearch] = useState([])
 
   fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
       .then(response => response.json())
       .then(json => console.log(setPokeList(json.results)))
+
+  const validateInput = (e)=>{
+    e.preventDefault();
+
+    setPokeSearch(e.target.pokename.value);
+
+  }
 
 
   return (
@@ -29,12 +37,20 @@ export default function Home() {
         <p>
           Get started by searching for a pokemon!
         </p>
-        <input type="text" />
-
+        <div>
+          <form onSubmit={validateInput}>
+            <label>Pokemon Name:
+              <input type="text" name='pokename' ></input>
+            </label>
+            <br/>
+            <button type="submit">Save</button>
+          </form>
+        </div>
         <div className={styles.grid}>
           {pokeList.map(pokeList => <a href={pokeList.url} className={styles.card}>
             <h2>{pokeList.name}</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
+            {/*<img src={pokeList.url.get(0).sprites.front_default} />*/}
+            {/*<p>{pokeList.url.sprites}</p>*/}
           </a>)}
         </div>
 
